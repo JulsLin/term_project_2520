@@ -1,4 +1,4 @@
-const userModel = require("database.js").userModel;
+const userModel = require("../database.js").userModel;
 
 const getUserByEmailIdAndPassword = (email, password) => {
   let user = userModel.findOne(email);

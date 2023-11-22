@@ -1,4 +1,4 @@
-let database = require("../database");
+let database = require("../database.js");
 
 let authController = {
   login: (req, res) => {
