@@ -1,5 +1,8 @@
 let Database = {
   cindy: {
+    id: 1,
+    email: "cindy@gmail.com",
+    password: "cindy123!",
     reminders: [
       {
         id: 1,
@@ -11,4 +14,22 @@ let Database = {
   },
 };
 
-module.exports = Database;
+
+const userModel = {
+  findOne: (email) => {
+    const user = database.find((user) => user.email === email);
+    if (user) {
+      return user;
+    }
+    throw new Error(`Couldn't find user with email: ${email}`);
+  },
+  findById: (id) => {
+    const user = database.find((user) => user.id === id);
+    if (user) {
+      return user;
+    }
+    throw new Error(`Couldn't find user with id: ${id}`);
+  },
+};
+
+module.exports = { Database, userModel };
