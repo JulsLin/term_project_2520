@@ -17,7 +17,11 @@ module.exports = Database;
 
 /*  original
 let Database = {
-  cindy: {
+  users: {
+    id: 1,
+    name: "Cindy",
+    email: "cindy@gmail.com",
+    password: "cindy123!",
     reminders: [
       {
         id: 1,
@@ -30,4 +34,3 @@ let Database = {
 };
 
 module.exports = Database;
-*/
