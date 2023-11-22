@@ -1,6 +1,7 @@
 let Database = {
-  cindy: {
+  users: {
     id: 1,
+    name: "Cindy",
     email: "cindy@gmail.com",
     password: "cindy123!",
     reminders: [
