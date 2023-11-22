@@ -6,6 +6,17 @@ const port = process.env.port || 8000;
 
 const app = express();
 
+// literally doesnt work???????????????////
+const data = require('../../database')
+app.get('/reminders', (req, res) => {
+  // get the reminders data from Database module
+  const reminders = data[0].reminders; 
+
+  // render the index.ejs file, passing reminders variable so its not undefined anymore!!!
+  res.render('reminder/index', { reminders : reminders });
+});
+
+
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
@@ -21,7 +32,7 @@ app.use(
   })
 );
 
-const passport = require("./middleware/passport");
+const passport = require("../middleware/passport");
 const authRoute = require("./routes/authRoute");
 const indexRoute = require("./routes/indexRoute");
 
@@ -44,7 +55,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// if it dont start with /auth then it go here
 app.use("/", indexRoute);
+
+// anthing that starts with auth goes to the authroute
 app.use("/auth", authRoute);
 
 app.listen(port, () => {

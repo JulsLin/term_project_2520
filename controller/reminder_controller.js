@@ -2,7 +2,16 @@ let database = require("../database");
 
 let remindersController = {
   list: (req, res) => {
-    res.render("reminder/index", { reminders: database.cindy.reminders });
+    /*
+    const userID = req.user.id
+    const userReminders = database.find((user) => user.userID === userID).reminders;
+    res.render("reminder/index", { reminders: userReminders });
+    */
+   // question mark form stack overflow. 
+    const userID = req.user?.id || 1; 
+      const userReminders = database.find((user) => user.userID === userID)?.reminders; 
+      res.render("reminder/index", { reminders: userReminders });
+    
   },
 
   new: (req, res) => {
@@ -10,45 +19,62 @@ let remindersController = {
   },
 
   listOne: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    if (searchResult != undefined) {
+    /// 
+    const userID = req.user?.id || 1;
+    const reminderToFind = req.params.id;
+    const searchResult = database
+      .find((user) => user.userID === userID)
+      .reminders.find((reminder) => reminder.id == reminderToFind);
+    
+
+    if (searchResult) {
       res.render("reminder/single-reminder", { reminderItem: searchResult });
     } else {
-      res.render("reminder/index", { reminders: database.cindy.reminders });
+      const userReminders = database.find((user) => user.userID === userID).reminders;
+      res.render("reminder/index", { reminders: userReminders });
     }
   },
 
   create: (req, res) => {
-    let reminder = {
-      id: database.cindy.reminders.length + 1,
+    ///
+    const userID = req.user?.id || 1;
+    const userReminders = database.find((user) => user.userID === userID).reminders;
+    //
+
+    const reminder = {
+      id: database.reminders.length + 1,
       title: req.body.title,
       description: req.body.description,
       completed: false,
     };
-    database.cindy.reminders.push(reminder);
+    userReminders.push(reminder);
     res.redirect("/reminders");
   },
 
   edit: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
+    const userID = req.user?.id || 1;
+    const reminderToFind = req.params.id;
+    const searchResult = database
+      .find((user) => user.userID === userID)
+      .reminders.find((reminder) => reminder.id == reminderToFind);
+    
     res.render("reminder/edit", { reminderItem: searchResult });
   },
 
   update: (req, res) => {
     // implementation here 👈
-    let reminderToFind = req.params.id;
+    const userID = req.user?.id || 1;
+    const reminderToFind = req.params.id;
+    const userReminders = database.find((user) => user.userID === userID).reminders;
+    const searchResult = userReminders.find((reminder) => reminder.id == reminderToFind);
+
+    ///
+/*  let reminderToFind = req.params.id;
     let searchResult = database.cindy.reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
     });
-
-    // if reminder exists,
-    if (searchResult != undefined) {
+*/
+    if (searchResult) {
 
       // update title and description
       searchResult.title = req.body.title;
@@ -59,24 +85,24 @@ let remindersController = {
 
     } else {
       // if reminder is not found, return to all reminders
-      res.render("reminder/index", { reminders: database.cindy.reminders });
+      res.render("reminder/index", { reminders: userReminders });
     }
   },
 
   delete: (req, res) => {
     // implementation here 👈
-    let reminderToFind = req.params.id;
 
+    const userID = req.user?.id || 1;
+    const reminderToFind = req.params.id;
+    const userReminders = database.find((user) => user.userID === userID).reminders;
     // get index of search result, because youre finding the ID
-    let searchResultIndex = database.cindy.reminders.findIndex(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
+    const searchResultIndex = userReminders.findIndex((reminder) => reminder.id == reminderToFind);
 
-    // if the ID of the reminder exists,
-    if (searchResultIndex != -1) {
+    // if ID 
+    if (searchResultIndex !== -1) {
 
     // remove reminder from the array
-    database.cindy.reminders.splice(searchResultIndex, 1);
+    userReminders.splice(searchResultIndex, 1);
 
     // redirect user to reminders page
     res.redirect("/reminders");
