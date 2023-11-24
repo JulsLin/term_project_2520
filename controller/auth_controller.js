@@ -19,7 +19,7 @@ let authController = {
 
 
   // WORK IN PROGRESS
-  /*
+  
   registerSubmit: (req, res) => {
     const { name, email, password } = req.body;
     // Check to see if user with the given email exists
@@ -43,7 +43,7 @@ let authController = {
     // Redirect to login page after successful registration
     res.redirect("/auth/login");
   },
-  */
+  
 };
 
 module.exports = authController;
