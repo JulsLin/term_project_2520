@@ -65,6 +65,12 @@ app.post("/auth/login", passport.authenticate("local", {
   successRedirect: "/reminders",
   failureRedirect: "/auth/login"
 }));
+// Julianna added this:
+app.post("/register", authController.registerSubmit);
+app.get("/auth/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+})
 /* passport.authenticate("local, {
   successredirect: "/reminders",
   failurerefirect "/auth/login")*/

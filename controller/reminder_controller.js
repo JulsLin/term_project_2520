@@ -8,9 +8,12 @@ let remindersController = {
     res.render("reminder/index", { reminders: userReminders });
     */
    // question mark form stack overflow. 
-    const userID = req.user?.id || 1; 
-      const userReminders = database.find((user) => user.userID === userID)?.reminders; 
-      res.render("reminder/index", { reminders: userReminders });
+
+   // Changed this to match the userID in the database 
+    const userID = req.user?.userID || 1; 
+    const user = database.userModel.findById(userID);
+    const userReminders = user?.reminders || []; 
+    res.render("reminder/index", { reminders: userReminders });
     
   },
 
@@ -22,7 +25,7 @@ let remindersController = {
     /// 
     const userID = req.user?.id || 1;
     const reminderToFind = req.params.id;
-    const searchResult = database
+    const searchResult = database.userModel
       .find((user) => user.userID === userID)
       .reminders.find((reminder) => reminder.id == reminderToFind);
     
@@ -30,19 +33,20 @@ let remindersController = {
     if (searchResult) {
       res.render("reminder/single-reminder", { reminderItem: searchResult });
     } else {
-      const userReminders = database.find((user) => user.userID === userID).reminders;
+      const userReminders = database.userModel.findOne((user) => user.userID === userID).reminders;
       res.render("reminder/index", { reminders: userReminders });
     }
   },
 
   create: (req, res) => {
+    const userID = req.user?.userID || 1;
     ///
-    const userID = req.user?.id || 1;
-    const userReminders = database.find((user) => user.userID === userID).reminders;
+    const user = database.userModel.findById(userID);
+    const userReminders = user?.reminders || [];
     //
 
     const reminder = {
-      id: database.reminders.length + 1,
+      id: userReminders.length + 1,
       title: req.body.title,
       description: req.body.description,
       completed: false,
