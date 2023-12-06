@@ -9,5 +9,8 @@
       <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
+    <form action="/reminder" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploaded_img" />
+    </form>
   </form>
 </div>
