@@ -2,6 +2,7 @@ const database = [
   {
     userID: 1,
     name: "Cindy",
+    role: "admin",
     email: "cindy@gmail.com",
     password: "cindy123",
     reminders: [

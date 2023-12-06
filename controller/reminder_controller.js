@@ -13,6 +13,7 @@ let remindersController = {
     const userID = req.user?.userID || 1; 
     const user = database.userModel.findById(userID);
     const userReminders = user?.reminders || []; 
+    // admin role: if role == "admin", then direct to page concerning sessions.
     res.render("reminder/index", { reminders: userReminders });
     
   },
@@ -40,17 +41,26 @@ let remindersController = {
 
   create: (req, res) => {
     const userID = req.user?.userID || 1;
-    ///
     const user = database.userModel.findById(userID);
     const userReminders = user?.reminders || [];
-    //
 
+    // upload
+    const multer  = require('multer')
+    const upload = multer({ dest: './public/uploads' })
+  
     const reminder = {
       id: userReminders.length + 1,
       title: req.body.title,
       description: req.body.description,
       completed: false,
+      cover: ''
     };
+    
+    // if the image exists, set it as the reminder cover
+    if (req.file) {
+	    reminder.cover = req.file.path;
+    }
+
     userReminders.push(reminder);
     res.redirect("/reminders");
   },
